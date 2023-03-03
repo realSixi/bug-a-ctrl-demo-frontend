@@ -1,38 +1,100 @@
-.App {
-  text-align: center;
+html, body, #root, .App {
+    height: 100%;
+
+    background-color: #222;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    background-color: #555;
+    padding: 8px;
+    color: #ddd;
+}
+
+
+.header .credit {
+    font-weight: 600;
+}
+
+.centered {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ignite-button {
+    background-color: orangered;
+    height: 55px;
+    width: 150px;
+    border-radius: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+    font-size: 24px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    border: 10px solid #666;
+
+    background: linear-gradient(to bottom, #a90329 0%, #8f0222 44%, #6d0019 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+}
+
+.ignite-button:active {
+    background: linear-gradient(to bottom, #6d0019 0%, #8f0222 56%, #a90329 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.bagger-image {
+    width: 800px;
+    max-width: 100%;
+    margin-bottom: 50px;
+}
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+.row {
+    display: flex;
 }

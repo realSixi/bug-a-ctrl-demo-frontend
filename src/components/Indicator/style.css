@@ -1,0 +1,18 @@
+.indicator {
+    background: linear-gradient(to bottom, #a90329 0%, #8f0222 44%, #6d0019 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+    width: 14px;
+    height: 14px;
+    border-radius: 20px;
+    border: 2px solid #6d0019;
+}
+
+.indicator--active {
+    background: linear-gradient(to bottom, #369904 0%, #246d00 50%, #369904 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    border: 2px solid #246d00;
+}
+
+.indicator--tristate {
+    background: linear-gradient(to bottom, #f9c667 0%, #f79621 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    border: 2px solid #e59200;
+}
