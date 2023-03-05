@@ -28,30 +28,7 @@ html, body, #root, .App {
     align-items: center;
 }
 
-.ignite-button {
-    background-color: orangered;
-    height: 55px;
-    width: 150px;
-    border-radius: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
-    color: white;
-    font-size: 24px;
-    font-weight: 500;
-
-    cursor: pointer;
-
-    border: 10px solid #666;
-
-    background: linear-gradient(to bottom, #a90329 0%, #8f0222 44%, #6d0019 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-
-}
-
-.ignite-button:active {
-    background: linear-gradient(to bottom, #6d0019 0%, #8f0222 56%, #a90329 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-}
 
 .bagger-image {
     width: 800px;
@@ -64,11 +41,6 @@ html, body, #root, .App {
     flex-direction: column;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
 
 .App-header {
     background-color: #282c34;
@@ -83,6 +55,29 @@ html, body, #root, .App {
 
 .App-link {
     color: #61dafb;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 40px;
+    justify-items: center;
+    align-items: center;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .keyboard {
+        display: none;
+    }
+
+    .buttons .status-indicator, .buttons .ignite-button {
+        width: 100px;
+        height: 30px;
+        font-size: 12px;
+        margin-right: 4px;
+        border-width: 5px;
+    }
 }
 
 @keyframes App-logo-spin {

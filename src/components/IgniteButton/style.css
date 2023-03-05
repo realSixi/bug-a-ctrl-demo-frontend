@@ -1,0 +1,30 @@
+.ignite-button {
+    background-color: orangered;
+    height: 55px;
+    width: 150px;
+    border-radius: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+    font-size: 24px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    border: 10px solid #666;
+
+    background: linear-gradient(to bottom, #a90329 0%, #8f0222 44%, #6d0019 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+}
+
+.ignite-button--disabled {
+    background: linear-gradient(to bottom, #333333 0%, #222222 44%, #333333 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    color: #666;
+    border: 10px solid #333;
+}
+
+.ignite-button:active {
+    background: linear-gradient(to bottom, #6d0019 0%, #8f0222 56%, #a90329 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}

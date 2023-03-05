@@ -5,10 +5,14 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import StatusIndicator from "./components/StatusIndicator";
 import baggerImg from './assets/bagger.svg'
+import IgniteButton from "./components/IgniteButton";
 
 dayjs.extend(duration);
 
 function App() {
+
+    const [enabled, setEnabled] = useState(false)
+
     const [apiKey, setApiKey] = useState<string | null>(null);
     const [ignited, setIgnited] = useState(false);
 
@@ -80,7 +84,7 @@ function App() {
     useEffect(() => {
         if (apiKey) {
             const events = new EventSource(
-                `/api/status/subscribe?apikey=${apiKey}`,
+                `/api/bugacontrol/status/subscribe?apikey=${apiKey}`,
                 {}
             );
 
@@ -100,7 +104,7 @@ function App() {
 
     useEffect(() => {
         if (apiKey) {
-            fetch(`/api/status`, {
+            fetch(`/api/bugacontrol/status`, {
                 headers: {
                     "api-key": apiKey,
                 },
@@ -111,6 +115,7 @@ function App() {
                     setInUse(json.inUse);
                     setInUseByUser(json.inUseByCurrentUser);
                     setCurrentCredit(json.total);
+                    setEnabled(json.enabled)
                 });
         }
     }, [apiKey]);
@@ -121,7 +126,7 @@ function App() {
                 <div className={"centered"}>
                     <div style={{color: '#ccc'}}>
                         Kein API-Key gefunden. Bitte nutze den Link von <a
-                        href={'https://bagger.projektion.tv'}>bagger.projektion.tv</a>.
+                        href={''}>bagger.projektion.tv</a>.
                     </div>
                 </div>
             </div>
@@ -131,27 +136,22 @@ function App() {
     return (
         <div className="App">
             <div className={"header"}>
-        <span className={'credit'}>
-          Deine Baggerzeit:{" "}
-            {currentCredit &&
-                dayjs.duration(currentCredit * 1000).format("HH:mm:ss")}
-        </span>
+                <span className={'credit'}>
+                  Deine Baggerzeit:{" "}
+                    {currentCredit &&
+                        dayjs.duration(currentCredit * 1000).format("HH:mm:ss")}
+                </span>
             </div>
 
             <div className={"centered"}>
-                <div>
+                <div className={'bagger-image-wrapper'} style={{position: 'relative'}}>
                     <img className={'bagger-image'} src={baggerImg}/>
+
                 </div>
 
 
                 <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        marginBottom: 40,
-                        justifyItems: "center",
-                        alignItems: "center",
-                    }}
+                    className={'buttons'}
                 >
                     <StatusIndicator name={"Frei"} status={!inUse}/>
                     <StatusIndicator
@@ -159,13 +159,7 @@ function App() {
                         triState={inUseByUser && !ignited}
                         status={inUseByUser && ignited}
                     />
-                    <div
-                        className={"ignite-button"}
-                        style={{marginLeft: 8}}
-                        onClick={ignite}
-                    >
-                        {ignited ? "STOP" : "START"}
-                    </div>
+                   <IgniteButton onClick={ignite} ignited={ignited} enabled={enabled}/>
                 </div>
 
                 <div className={"keyboard"}>
