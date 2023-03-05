@@ -95,6 +95,7 @@ function App() {
                     setInUse(json.inUse);
                     setInUseByUser(json.inUseByCurrentUser);
                     setCurrentCredit(json.total);
+                    setEnabled(json.enabled)
                 } else if (json.type === "charged") {
                     setCurrentCredit(json.total);
                 }
