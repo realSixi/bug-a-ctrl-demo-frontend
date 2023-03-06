@@ -9,17 +9,31 @@ import IgniteButton from "./components/IgniteButton";
 
 dayjs.extend(duration);
 
+interface ApiState {
+    enabled: boolean;
+    inUse: boolean;
+    inUseByCurrentUser: boolean;
+    total: number;
+}
+
 function App() {
 
-    const [enabled, setEnabled] = useState(false)
+    // const [enabled, setEnabled] = useState(false)
 
     const [apiKey, setApiKey] = useState<string | null>(null);
     const [ignited, setIgnited] = useState(false);
 
-    const [inUse, setInUse] = useState(false);
-    const [inUseByUser, setInUseByUser] = useState(false);
+    // const [inUse, setInUse] = useState(false);
+    // const [inUseByUser, setInUseByUser] = useState(false);
+    //
+    // const [currentCredit, setCurrentCredit] = useState<number | null>(0);
 
-    const [currentCredit, setCurrentCredit] = useState<number | null>(0);
+    const [apiState, setApiState] = useState<ApiState>({
+        enabled: false,
+        inUse: false,
+        total: 0,
+        inUseByCurrentUser: false
+    })
 
     useEffect(() => {
         const urlSearchParams = new URLSearchParams(window.location.search);
@@ -34,7 +48,7 @@ function App() {
     }, []);
 
     const sendEvent = async (data: any) => {
-        await fetch("/api/bugacontrol/move", {
+        await fetch("https://bagger.projektion.tv/api/bugacontrol/move", {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
@@ -45,7 +59,7 @@ function App() {
     };
 
     const sendIgnite = async (status: boolean) => {
-        const res = await fetch("/api/bugacontrol/ignite", {
+        const res = await fetch("https://bagger.projektion.tv/api/bugacontrol/ignite", {
             method: "POST",
             body: JSON.stringify({
                 on: status,
@@ -84,7 +98,7 @@ function App() {
     useEffect(() => {
         if (apiKey) {
             const events = new EventSource(
-                `/api/bugacontrol/status/subscribe?apikey=${apiKey}`,
+                `https://bagger.projektion.tv/api/bugacontrol/status/subscribe?apikey=${apiKey}`,
                 {}
             );
 
@@ -92,12 +106,16 @@ function App() {
                 const json = JSON.parse(event.data);
                 console.log("got event", json);
                 if (json.type === "state") {
-                    setInUse(json.inUse);
-                    setInUseByUser(json.inUseByCurrentUser);
-                    setCurrentCredit(json.total);
-                    setEnabled(json.enabled)
+                    setApiState(json as ApiState);
+                    // setInUse(json.inUse);
+                    // setInUseByUser(json.inUseByCurrentUser);
+                    // setCurrentCredit(json.total);
+                    // setEnabled(json.enabled)
                 } else if (json.type === "charged") {
-                    setCurrentCredit(json.total);
+                    setApiState({
+                        ...apiState,
+                        total: json.total,
+                    })
                 }
             };
         }
@@ -105,7 +123,7 @@ function App() {
 
     useEffect(() => {
         if (apiKey) {
-            fetch(`/api/bugacontrol/status`, {
+            fetch(`https://bagger.projektion.tv/api/bugacontrol/status`, {
                 headers: {
                     "api-key": apiKey,
                 },
@@ -113,10 +131,7 @@ function App() {
             })
                 .then((res) => res.json())
                 .then((json) => {
-                    setInUse(json.inUse);
-                    setInUseByUser(json.inUseByCurrentUser);
-                    setCurrentCredit(json.total);
-                    setEnabled(json.enabled)
+                    setApiState(json)
                 });
         }
     }, [apiKey]);
@@ -139,8 +154,8 @@ function App() {
             <div className={"header"}>
                 <span className={'credit'}>
                   Deine Baggerzeit:{" "}
-                    {currentCredit &&
-                        dayjs.duration(currentCredit * 1000).format("HH:mm:ss")}
+                    {apiState.total &&
+                        dayjs.duration(apiState.total * 1000).format("HH:mm:ss")}
                 </span>
             </div>
 
@@ -154,13 +169,13 @@ function App() {
                 <div
                     className={'buttons'}
                 >
-                    <StatusIndicator name={"Frei"} status={!inUse}/>
+                    <StatusIndicator name={"Frei"} status={!apiState.inUse}/>
                     <StatusIndicator
                         name={"Aktiv"}
-                        triState={inUseByUser && !ignited}
-                        status={inUseByUser && ignited}
+                        triState={apiState.inUseByCurrentUser && !ignited}
+                        status={apiState.inUseByCurrentUser && ignited}
                     />
-                   <IgniteButton onClick={ignite} ignited={ignited} enabled={enabled}/>
+                   <IgniteButton onClick={ignite} ignited={ignited} enabled={apiState.enabled}/>
                 </div>
 
                 <div className={"keyboard"}>
@@ -169,7 +184,7 @@ function App() {
                             value={"q"}
                             onPress={sendEvent}
                             axis={"vertical_axis"}
-                            factor={1}
+                            factor={-1}
                             disabled={false}
                         />
                         <Key value={"w"}/>
@@ -177,7 +192,7 @@ function App() {
                             value={"e"}
                             onPress={sendEvent}
                             axis={"vertical_axis"}
-                            factor={-1}
+                            factor={1}
                             disabled={false}
                         />
                         <Key value={"r"}/>
